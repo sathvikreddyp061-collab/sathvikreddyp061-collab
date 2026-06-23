@@ -1,0 +1,39 @@
+name: Refresh profile assets
+
+# Re-downloads the dynamic stat SVGs so they stay current, while keeping them
+# committed in-repo (reliable rendering on GitHub, no broken third-party images).
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download fresh stat cards
+        env:
+          U: ${{ github.repository_owner }}
+        run: |
+          set -e
+          dl() { curl -sfL --retry 4 --retry-delay 5 -A "Mozilla/5.0" "$2" -o "assets/$1.tmp" && mv "assets/$1.tmp" "assets/$1"; }
+          dl stats.svg     "https://github-readme-stats.vercel.app/api?username=$U&show_icons=true&hide_border=true&bg_color=0B0F1A&title_color=22D3EE&icon_color=F0ABFC&text_color=C9D1D9"
+          dl top-langs.svg "https://github-readme-stats.vercel.app/api/top-langs/?username=$U&layout=compact&hide_border=true&bg_color=0B0F1A&title_color=22D3EE&text_color=C9D1D9&langs_count=8"
+          dl activity.svg  "https://github-readme-activity-graph.vercel.app/graph?username=$U&bg_color=0B0F1A&color=22D3EE&line=6D28D9&point=F0ABFC&area=true&hide_border=true"
+          for r in fraud-streaming retail-cdc claims-lakehouse portfolio; do
+            dl "pin-$r.svg" "https://github-readme-stats.vercel.app/api/pin/?username=$U&repo=$r&hide_border=true&bg_color=0B0F1A&title_color=22D3EE&icon_color=F0ABFC&text_color=C9D1D9"
+          done
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/*.svg
+          git diff --staged --quiet || git commit -m "chore: refresh profile stat assets"
+          git push
