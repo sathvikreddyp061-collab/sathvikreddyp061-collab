@@ -146,3 +146,5 @@ Open to senior data engineering roles — remote · hybrid · on-site. Want a wa
 <img width="100%" src="./assets/footer.svg" alt="" />
 
 </div>
+
+<!-- profile readme -->
