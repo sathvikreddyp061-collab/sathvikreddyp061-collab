@@ -12,7 +12,6 @@
 <a href="https://portfolio-fawn-beta-zjvbplk2vx.vercel.app"><img src="https://img.shields.io/badge/Live_Portfolio-0B0F1A?style=for-the-badge&logo=vercel&logoColor=22D3EE&labelColor=0B0F1A" alt="Portfolio" /></a>
 <a href="https://www.linkedin.com/in/sathvik-0d138/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
 <a href="mailto:sathvikreddyp061@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
-<img src="https://img.shields.io/badge/Frisco,_TX-6D28D9?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Location" />
 
 </div>
 
@@ -128,7 +127,7 @@
 
 <div align="center">
 
-Open to senior data engineering roles — remote · hybrid · on-site. Want a walkthrough of any pipeline? Reach out.
+Want a walkthrough of any pipeline? Reach out.
 
 <a href="https://www.linkedin.com/in/sathvik-0d138/"><img src="https://img.shields.io/badge/Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
 <a href="mailto:sathvikreddyp061@gmail.com"><img src="https://img.shields.io/badge/Say_Hello-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
