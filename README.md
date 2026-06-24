@@ -19,57 +19,30 @@
 <!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  INTRO  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
 <br/>
 
-> 👋 I'm **Sathvik** — a senior data engineer with five years building real-time pipelines and lakehouses on AWS for financial services and healthcare. I care about one thing above all: shrinking the latency between an **event** happening and the **decision** it should trigger.
+> 👋 I'm **Sathvik** — a senior data engineer with five years building real-time pipelines and lakehouses on AWS for financial services and healthcare. I care about one thing above all: shrinking the latency between an **event** happening and the **decision** it should trigger. Every project below is **open-source and reproducible from a single `make` command.**
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  LIVE PIPELINE  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+## 🛰️ The system I build, end to end
 
 <div align="center">
-  <img width="78%" src="./assets/skills.svg" alt="Tech stack icons" />
+
+<img width="100%" src="./assets/pipeline.svg" alt="Animated event-to-decision data pipeline" />
+
+<sub>**ingest → event spine → compute → lakehouse → serve** — watch the data flow through it.</sub>
+
 </div>
 
-<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ARCHITECTURE  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
-## 🗺️ How I think about data systems
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  3D STACK  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+## 🧊 My stack, in three dimensions
 
-```mermaid
-flowchart LR
-    subgraph SRC["🟢 Sources"]
-        PG[(Postgres)]
-        EDI[EDI 837 / Synthea]
-        CARD[Card-auth events]
-    end
-    subgraph SPINE["🔵 Event Spine"]
-        DBZ[Debezium CDC]
-        K{{Apache Kafka}}
-    end
-    subgraph COMPUTE["🟣 Compute"]
-        SS[Spark Structured Streaming]
-        ICE[(Apache Iceberg Lakehouse)]
-        DBT[dbt transforms]
-    end
-    subgraph SERVE["🟡 Serve / Decide"]
-        RDS[(Redis features)]
-        ML[XGBoost · ONNX]
-        API[FastAPI scoring]
-        BI[Analytics marts]
-    end
+<div align="center">
 
-    PG --> DBZ --> K
-    EDI --> K
-    CARD --> K
-    K --> SS --> ICE --> DBT
-    SS --> RDS --> ML --> API
-    DBT --> BI
+<img width="100%" src="./assets/tech-iso.svg" alt="Isometric 3D tech stack" />
 
-    classDef src fill:#0B0F1A,stroke:#22F0FF,color:#fff
-    classDef spine fill:#0B0F1A,stroke:#22D3EE,color:#fff
-    classDef comp fill:#0B0F1A,stroke:#6D28D9,color:#fff
-    classDef serve fill:#0B0F1A,stroke:#F0ABFC,color:#fff
-    class PG,EDI,CARD src
-    class DBZ,K spine
-    class SS,ICE,DBT comp
-    class RDS,ML,API,BI serve
-```
+</div>
 
 <!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  PROJECTS  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
-## 🚀 Featured Projects
+## 🚀 Featured Projects — deep dive
 
 <div align="center">
 <table>
@@ -92,27 +65,48 @@ flowchart LR
 </table>
 </div>
 
-- ⚡ **[fraud-streaming](https://github.com/sathvikreddyp061-collab/fraud-streaming)** — sub-250ms card-auth fraud scoring on a 5K eps stream. `Kafka → Spark → Redis → XGBoost (ONNX) → Iceberg + FastAPI`
-- 🔄 **[retail-cdc](https://github.com/sathvikreddyp061-collab/retail-cdc)** — exactly-once CDC via outbox + content-hash. `Postgres → Debezium → Kafka → Spark/Iceberg → dbt → reverse-ETL`
-- 🏥 **[claims-lakehouse](https://github.com/sathvikreddyp061-collab/claims-lakehouse)** — HIPAA-flavored claims lakehouse. `Synthea + EDI 837 → Kafka → PySpark Iceberg → dbt → Great Expectations → Airflow`
-- 🎨 **[portfolio](https://github.com/sathvikreddyp061-collab/portfolio)** — cinematic 3D site. `Next.js · React Three Fiber · GLSL shaders · Framer Motion` · **[Live ↗](https://portfolio-fawn-beta-zjvbplk2vx.vercel.app)**
+### ⚡ [fraud-streaming](https://github.com/sathvikreddyp061-collab/fraud-streaming) &nbsp;·&nbsp; sub-second risk on a 5K event/sec spine
 
-<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  STACK  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
-## 🧰 Tech I work with
+> Re-platformed a batch-heavy risk surface into an event-native lakehouse. Card-auth events hit Kafka under strict Avro contracts; PySpark Structured Streaming joins each against a Redis feature store and scores with XGBoost→ONNX — **P99 inference under 1 ms**, well inside the 250 ms decisioning budget.
 
-<div align="center">
+<p align="center">
+<img src="https://img.shields.io/badge/5K-events%2Fsec_sustained-22F0FF?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/%3C1ms-P99_inference-22F0FF?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/0.892-model_AUC-22F0FF?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/73%25-recall@review-22F0FF?style=for-the-badge&labelColor=0B0F1A" />
+</p>
 
-| Layer | Tools |
-|:--|:--|
-| **Languages** | ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=postgresql&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) |
-| **Streaming** | ![Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white) ![Debezium](https://img.shields.io/badge/Debezium-FF4632?style=flat-square&logo=redhat&logoColor=white) ![Spark](https://img.shields.io/badge/Spark_Streaming-E25A1C?style=flat-square&logo=apachespark&logoColor=white) |
-| **Lakehouse** | ![Iceberg](https://img.shields.io/badge/Iceberg-2496ED?style=flat-square&logo=apache&logoColor=white) ![Delta](https://img.shields.io/badge/Delta_Lake-00ADD4?style=flat-square&logo=databricks&logoColor=white) ![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white) ![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=flat-square&logo=duckdb&logoColor=black) |
-| **Warehouse** | ![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=flat-square&logo=snowflake&logoColor=white) ![Redshift](https://img.shields.io/badge/Redshift-8C4FFF?style=flat-square&logo=amazonredshift&logoColor=white) |
-| **Orchestration** | ![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white) ![Step Functions](https://img.shields.io/badge/Step_Functions-FF4F8B?style=flat-square&logo=awslambda&logoColor=white) |
-| **AI / ML** | ![Bedrock](https://img.shields.io/badge/Bedrock-232F3E?style=flat-square&logo=amazonwebservices&logoColor=FF9900) ![SageMaker](https://img.shields.io/badge/SageMaker-232F3E?style=flat-square&logo=amazonwebservices&logoColor=FF9900) ![XGBoost](https://img.shields.io/badge/XGBoost-189FDD?style=flat-square&logo=python&logoColor=white) ![ONNX](https://img.shields.io/badge/ONNX-005CED?style=flat-square&logo=onnx&logoColor=white) |
-| **Infra** | ![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazonwebservices&logoColor=FF9900) ![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white) |
+`Kafka (Redpanda) + Avro → PySpark Structured Streaming ⇄ Redis features → XGBoost/ONNX → Iceberg silver · alerts topic · FastAPI`
 
-</div>
+### 🔄 [retail-cdc](https://github.com/sathvikreddyp061-collab/retail-cdc) &nbsp;·&nbsp; exactly-once change data capture
+
+> Postgres logical decoding → Debezium → Kafka → Spark/Iceberg → dbt → a custom reverse-ETL worker. The **outbox pattern + content-hash idempotency** proves producer-side exactly-once: 76,533 webhook POSTs on first run, **zero on rerun**.
+
+<p align="center">
+<img src="https://img.shields.io/badge/1.1M-CDC_events-FF3CAC?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/76,533-exactly--once_POSTs-FF3CAC?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/45%2F45-dbt_tests-FF3CAC?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/%3C5min-on_a_laptop-FF3CAC?style=for-the-badge&labelColor=0B0F1A" />
+</p>
+
+`PostgreSQL 16 → Debezium 2.6 → Kafka → PySpark → Iceberg → dbt-DuckDB → content-hash reverse-ETL → mock Segment`
+
+### 🏥 [claims-lakehouse](https://github.com/sathvikreddyp061-collab/claims-lakehouse) &nbsp;·&nbsp; HIPAA-flavored claims lakehouse
+
+> Synthetic patients (Synthea) and a hand-written **X12 EDI 837 writer + parser** flow through Kafka into Iceberg, transform via dbt-DuckDB, pass Great Expectations gates, get SHA-256 PII masking, and land as a Member-360 mart — all orchestrated by Airflow.
+
+<p align="center">
+<img src="https://img.shields.io/badge/55K-claims_0_dropped-7C5CFF?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/26%2F26-dbt_tests-7C5CFF?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/8%2F8-GE_expectations-7C5CFF?style=for-the-badge&labelColor=0B0F1A" />
+<img src="https://img.shields.io/badge/%3C3min-end--to--end-7C5CFF?style=for-the-badge&labelColor=0B0F1A" />
+</p>
+
+`Synthea + EDI 837 → Kafka → PySpark Iceberg → dbt-DuckDB → Great Expectations → hipaa_mask → Member 360 → Airflow`
+
+### 🎨 [portfolio](https://github.com/sathvikreddyp061-collab/portfolio) &nbsp;·&nbsp; the cinematic front door
+
+> A 3D, WebGL personal site that makes the work above tangible. `Next.js App Router · React Three Fiber · custom GLSL particle shaders · Framer Motion · Lenis` — **[live ↗](https://portfolio-fawn-beta-zjvbplk2vx.vercel.app)**
 
 <!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  STATS  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
 ## 📊 GitHub Activity
@@ -124,10 +118,6 @@ flowchart LR
 <img height="170" src="./assets/top-langs.svg" alt="Top languages" />
 
 <br/><br/>
-
-<img width="92%" src="https://raw.githubusercontent.com/sathvikreddyp061-collab/sathvikreddyp061-collab/output/github-contribution-grid-snake-dark.svg" alt="Contribution snake" />
-
-<br/>
 
 <img width="92%" src="./assets/activity.svg" alt="Contribution activity graph" />
 
@@ -146,5 +136,3 @@ Open to senior data engineering roles — remote · hybrid · on-site. Want a wa
 <img width="100%" src="./assets/footer.svg" alt="" />
 
 </div>
-
-<!-- profile readme -->
